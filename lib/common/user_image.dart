@@ -1,0 +1,61 @@
+import 'package:dlivrDriver/res/app_colors.dart';
+import 'package:dlivrDriver/utils/size_config.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+
+class BuildUserImage extends StatelessWidget {
+  const BuildUserImage(
+      {@required this.imageData, this.largeCircle = false, Key key})
+      : super(key: key);
+  final imageData;
+  final bool largeCircle;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: SizeConfig.heightMultiplier * 18,
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+                width: SizeConfig.widthMultiplier * 30,
+                height: SizeConfig.heightMultiplier * 10,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                          color: AppColors.black.withOpacity(0.2),
+                          blurRadius: 15,
+                          offset: Offset(0, -2))
+                    ])),
+          ),
+          Center(
+            child: CircleAvatar(
+              radius: SizeConfig.imageSizeMultiplier * (largeCircle ? 20 : 17),
+              backgroundColor: AppColors.white,
+            ),
+          ),
+          imageData == ''
+              ? Center(
+                  child: CircleAvatar(
+                    radius: SizeConfig.imageSizeMultiplier *
+                        (largeCircle ? 17 : 15),
+                    backgroundColor: AppColors.violet.withOpacity(0.4),
+                    child: Icon(Feather.user, color: AppColors.violet),
+                  ),
+                )
+              : Center(
+                  child: CircleAvatar(
+                    radius: SizeConfig.imageSizeMultiplier *
+                        (largeCircle ? 17 : 15),
+                    backgroundImage: NetworkImage(imageData),
+                    backgroundColor: AppColors.violet.withOpacity(0.4),
+                  ),
+                )
+        ],
+      ),
+    );
+  }
+}
