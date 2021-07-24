@@ -67,7 +67,7 @@ class EmailResetPassword extends StatelessWidget {
               key: controller.formKey,
               child: BuildCustomTextField(
                 controller: controller.emailCtrl,
-                textInputType: TextInputType.phone,
+                textInputType: TextInputType.emailAddress,
                 hint: 'Email Address',
                 prefixIcon: Icon(Feather.phone),
                 validator: (val) => Validation.validateEmail(val),
