@@ -17,6 +17,9 @@ class Preferences {
     if (userData.token != null) {
       saver.setString('auth_token', userData.token);
     }
+    print(userData.toJson());
+    saver.setString('id', userData.id ?? '');
+    saver.setString('id', userData.sId ?? '');
     saver.setString('email', userData.email ?? '');
     saver.setString('name', userData.name ?? '');
     saver.setString('phone', userData.phone ?? '');
@@ -49,6 +52,7 @@ class Preferences {
     }
   }
 
+  static String getId() => saver.getString('id');
   static String getToken() => saver.getString('auth_token');
   static String getFcmToken() => saver.getString('fcm_token');
   static String getBuild() => saver.getString('build');

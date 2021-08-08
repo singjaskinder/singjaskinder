@@ -10,18 +10,21 @@ class EndPoints {
   static const postLogin = 'driver/login';
   static const putUpdateDriver = 'driver/update';
   static const getDriverDetails = 'driver';
-  static const getVehicleCategory = 'user/getVehicleCategory';
+  static const getNearbyJobs = 'driver/nearbyJobs';
+  static const getVehicleCategory = 'driver/getVehicleCategory';
   static const postAddVehicle = 'driver/vehicle/addVehicle';
   static const getVehicles = 'driver/vehicle/all';
   static const putUpdateVehicle = 'driver/vehicle/update';
   static const deleteUpdateVehicle = 'driver/vehicle';
   static const postReview = 'driver/review';
   static const getReviews = 'driver/reviews';
+  static const putAddDocument = 'driver/addDocument';
   static const bidJob = 'driver/job/bid';
   static const getBiddedJobs = 'driver/myBiddings';
   static const putJobCancel = 'driver/rejectJob';
   static const putJobProgress = 'driver/setInProgress';
   static const putJobCompleted = 'driver/setCompleted';
+  static const getJobs = 'driver/job';
   static const getAnalyticsWeek = 'driver/analytics/week';
   static const getAnalyticsMonth = 'driver/analytics/month';
 }

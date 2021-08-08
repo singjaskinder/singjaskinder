@@ -7,6 +7,7 @@ import 'package:dlivrDriver/overlays/bottom_sheet.dart';
 import 'package:dlivrDriver/overlays/progress_dialog.dart';
 import 'package:dlivrDriver/routes/app_routes.dart';
 import 'package:dlivrDriver/utils/functions/preferences.dart';
+import 'package:dlivrDriver/utils/local.dart';
 import 'package:dlivrDriver/views/build_navigation/build_navigation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/src/media_type.dart';
 
 class ProfileDetailsController extends GetxController {
- final BuildNavigationController buildNavigationController = Get.find();
+  final BuildNavigationController buildNavigationController = Get.find();
   final formKey = GlobalKey<FormState>();
   final nameCtrl = TextEditingController();
   final phoneCtrl = TextEditingController();
@@ -105,11 +106,11 @@ class ProfileDetailsController extends GetxController {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
       try {
-        final data = {
-          'name': nameCtrl.text.trim(),
-        };
+        final data = Dio.FormData.fromMap({'name': nameCtrl.text});
+        Preferences.saver.setString('name', nameCtrl.text);
         isLoading(true);
-        await ApiHandler.putHttp(EndPoints.putUpdateDriver, data);
+        await ApiHandler.putHttp(EndPoints.putUpdateDriver, data,
+            isDefault: false);
         isLoading(false);
         BuildRetryBottomSheet(Get.context, Get.back,
             text: 'Profile details updated',
@@ -128,14 +129,17 @@ class ProfileDetailsController extends GetxController {
   void updateImage() async {
     try {
       final data = Dio.FormData.fromMap({
-        'profile_image': await Dio.MultipartFile.fromFile(
+        'driver_profile': await Dio.MultipartFile.fromFile(
             buildNavigationController.imageUrl.value,
             contentType: MediaType('image', 'jpeg'))
       });
       isLoading(true);
-      final res = await ApiHandler.putHttp(EndPoints.putUpdateDriver, data);
-      Preferences.saveUserDetails(UserM.fromJson(res.data));
-      Future.delayed(Duration(milliseconds: 1800), () {
+      final res = await ApiHandler.putHttp(EndPoints.putUpdateDriver, data,
+          isDefault: false);
+      print(res.data);
+      Preferences.saver.setString('image',
+          makeImageLink(UserM.fromJson(res.data).userData[0].profileImage));
+      Future.delayed(Duration(milliseconds: 200), () {
         fromNetwork.value = true;
         buildNavigationController.imageUrl.value = Preferences.getImage();
       });
@@ -153,5 +157,4 @@ class ProfileDetailsController extends GetxController {
           errored: true, cancellable: false);
     }
   }
-
-        }
+}

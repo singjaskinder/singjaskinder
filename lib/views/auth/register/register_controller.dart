@@ -34,8 +34,8 @@ class RegisterController extends GetxController {
       isLoading(true);
       final phoneRes = await ApiHandler.getHttp(EndPoints.getCheckPhone,
           params: phoneCtrl.text);
-      final emailRes =
-          await ApiHandler.getHttp(EndPoints.getCheckEmail, params: phoneCtrl.text);
+      final emailRes = await ApiHandler.getHttp(EndPoints.getCheckEmail,
+          params: emailCtrl.text);
       isLoading(false);
       final phoneCheck = PhoneCheckM.fromJson(phoneRes.data);
       final emailCheck = PhoneCheckM.fromJson(emailRes.data);

@@ -28,7 +28,7 @@ class AddRatingController extends GetxController {
           'review': descriptionCtrl.text,
         };
         await ApiHandler.postHttp(EndPoints.postReview, data,
-            params: job.sId + '/' + job.driverDetails.sId);
+            params: job.sId + '/' + job.userId.sId);
         isLoading(false);
         Get.back(result: true);
       } catch (e) {

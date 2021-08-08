@@ -25,6 +25,8 @@ class UserM {
 }
 
 class UserData {
+  String id;
+  String sId;
   String profileImage;
   bool mobileVerified;
   bool emailVerified;
@@ -45,7 +47,9 @@ class UserData {
   String updatedAt;
 
   UserData(
-      {this.profileImage,
+      {this.id,
+      this.sId,
+      this.profileImage,
       this.mobileVerified,
       this.emailVerified,
       this.noOfRatings,
@@ -65,7 +69,9 @@ class UserData {
       this.updatedAt});
 
   UserData.fromJson(Map<String, dynamic> json) {
-    profileImage = json['profile_image'];
+    id = json['id'];
+    sId = json['_id'];
+    profileImage = json['image'];
     mobileVerified = json['mobile_verified'];
     emailVerified = json['email_verified'];
     noOfRatings = json['no_of_ratings'];
@@ -92,11 +98,13 @@ class UserData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['profile_image'] = this.profileImage;
+    data['id'] = this.id;
+    data['_id'] = this.sId;
+    data['image'] = this.profileImage;
     data['mobile_verified'] = this.mobileVerified;
     data['email_verified'] = this.emailVerified;
     data['no_of_ratings'] = this.noOfRatings;
-    data['total_rating'] = this.totalRating.toDouble();
+    data['total_rating'] = this.totalRating?.toDouble();
     data['is_restricted'] = this.isRestricted;
     data['email'] = this.email;
     data['phone'] = this.phone;

@@ -63,7 +63,7 @@ class Login extends StatelessWidget {
               BuildSizedBox(height: 3),
               BuildCustomTextField(
                 controller: controller.emailCtrl,
-                textInputType: TextInputType.phone,
+                textInputType: TextInputType.emailAddress,
                 hint: 'Email Address',
                 prefixIcon: Icon(Feather.mail),
                 validator: (val) => Validation.validateEmail(val),

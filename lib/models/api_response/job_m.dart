@@ -36,8 +36,8 @@ class Jobs {
   String packageTitle;
   String packageDescription;
   int noOfItem;
-  double packageSize;
-  double packageWeight;
+  int packageSize;
+  int packageWeight;
   int extraHelp;
   String deliveredDate;
   String biddingEndDate;
@@ -46,10 +46,12 @@ class Jobs {
   double finalBudget;
   String trackingLink;
   String status;
-  DriverDetails driverDetails;
+  String driverId;
   List<Images> images;
-  List<BiddingDetails> biddingDetails;
+  List<Bidding> bidding;
+  UserId userId;
   String createdAt;
+  String updatedAt;
   int iV;
 
   Jobs(
@@ -74,10 +76,12 @@ class Jobs {
       this.finalBudget,
       this.trackingLink,
       this.status,
-      this.driverDetails,
+      this.driverId,
       this.images,
-      this.biddingDetails,
+      this.bidding,
+      this.userId,
       this.createdAt,
+      this.updatedAt,
       this.iV});
 
   Jobs.fromJson(Map<String, dynamic> json) {
@@ -96,8 +100,8 @@ class Jobs {
     packageTitle = json['package_title'];
     packageDescription = json['package_description'];
     noOfItem = json['no_of_item'];
-    packageSize = json['package_size'].toDouble();
-    packageWeight = json['package_weight'].toDouble();
+    packageSize = json['package_size'];
+    packageWeight = json['package_weight'];
     extraHelp = json['extra_help'];
     deliveredDate = json['delivered_date'];
     biddingEndDate = json['bidding_end_date'];
@@ -106,9 +110,7 @@ class Jobs {
     finalBudget = json['final_budget'].toDouble();
     trackingLink = json['tracking_link'];
     status = json['status'];
-    driverDetails = json['driverId'] != null
-        ? new DriverDetails.fromJson(json['driverId'])
-        : null;
+    driverId = json['driverId'];
     if (json['images'] != null) {
       images = new List<Images>();
       json['images'].forEach((v) {
@@ -116,12 +118,15 @@ class Jobs {
       });
     }
     if (json['bidding'] != null) {
-      biddingDetails = new List<BiddingDetails>();
+      bidding = new List<Bidding>();
       json['bidding'].forEach((v) {
-        biddingDetails.add(new BiddingDetails.fromJson(v));
+        bidding.add(new Bidding.fromJson(v));
       });
     }
+    userId =
+        json['userId'] != null ? new UserId.fromJson(json['userId']) : null;
     createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
     iV = json['__v'];
   }
 
@@ -147,21 +152,23 @@ class Jobs {
     data['extra_help'] = this.extraHelp;
     data['delivered_date'] = this.deliveredDate;
     data['bidding_end_date'] = this.biddingEndDate;
-    data['estimated_budget'] = this.estimatedBudget;
-    data['actual_budget'] = this.actualBudget;
-    data['final_budget'] = this.finalBudget;
+    data['estimated_budget'] = this.estimatedBudget.toDouble();
+    data['actual_budget'] = this.actualBudget.toDouble();
+    data['final_budget'] = this.finalBudget.toDouble();
     data['tracking_link'] = this.trackingLink;
     data['status'] = this.status;
-    if (this.driverDetails != null) {
-      data['driverId'] = this.driverDetails.toJson();
-    }
+    data['driverId'] = this.driverId;
     if (this.images != null) {
       data['images'] = this.images.map((v) => v.toJson()).toList();
     }
-    if (this.biddingDetails != null) {
-      data['bidding'] = this.biddingDetails.map((v) => v.toJson()).toList();
+    if (this.bidding != null) {
+      data['bidding'] = this.bidding.map((v) => v.toJson()).toList();
+    }
+    if (this.userId != null) {
+      data['userId'] = this.userId.toJson();
     }
     data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
     return data;
   }
@@ -186,103 +193,6 @@ class PickLocation {
   }
 }
 
-class DriverDetails {
-  double noOfRatings;
-  double totalRating;
-  String sId;
-  String name;
-  String email;
-  String phone;
-  String password;
-  String pin;
-  String image;
-  List<Addresses> addresses;
-
-  DriverDetails(
-      {this.noOfRatings,
-      this.totalRating,
-      this.sId,
-      this.name,
-      this.email,
-      this.phone,
-      this.password,
-      this.pin,
-      this.image,
-      this.addresses});
-
-  DriverDetails.fromJson(Map<String, dynamic> json) {
-    noOfRatings = json['no_of_ratings'].toDouble();
-    totalRating = json['total_rating'].toDouble();
-    sId = json['_id'];
-    name = json['name'];
-    email = json['email'];
-    phone = json['phone'];
-    password = json['password'];
-    pin = json['pin'];
-    image = json['image'];
-    if (json['addresses'] != null) {
-      addresses = new List<Addresses>();
-      json['addresses'].forEach((v) {
-        addresses.add(new Addresses.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['no_of_ratings'] = this.noOfRatings;
-    data['total_rating'] = this.totalRating;
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['password'] = this.password;
-    data['pin'] = this.pin;
-    data['image'] = this.image;
-    if (this.addresses != null) {
-      data['addresses'] = this.addresses.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Addresses {
-  String sId;
-  String address;
-  String state;
-  String city;
-  int postalCode;
-  String country;
-
-  Addresses(
-      {this.sId,
-      this.address,
-      this.state,
-      this.city,
-      this.postalCode,
-      this.country});
-
-  Addresses.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    address = json['address'];
-    state = json['state'];
-    city = json['city'];
-    postalCode = json['postal_code'];
-    country = json['country'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['address'] = this.address;
-    data['state'] = this.state;
-    data['city'] = this.city;
-    data['postal_code'] = this.postalCode;
-    data['country'] = this.country;
-    return data;
-  }
-}
-
 class Images {
   String sId;
   String path;
@@ -302,17 +212,16 @@ class Images {
   }
 }
 
-class BiddingDetails {
+class Bidding {
   String sId;
   String driverId;
   double bid;
   String remarks;
   String createdAt;
 
-  BiddingDetails(
-      {this.sId, this.driverId, this.bid, this.remarks, this.createdAt});
+  Bidding({this.sId, this.driverId, this.bid, this.remarks, this.createdAt});
 
-  BiddingDetails.fromJson(Map<String, dynamic> json) {
+  Bidding.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     driverId = json['driverId'];
     bid = json['bid'].toDouble();
@@ -324,9 +233,34 @@ class BiddingDetails {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['driverId'] = this.driverId;
-    data['bid'] = this.bid;
+    data['bid'] = this.bid.toDouble();
     data['remarks'] = this.remarks;
     data['createdAt'] = this.createdAt;
+    return data;
+  }
+}
+
+class UserId {
+  String profileImage;
+  String sId;
+  String phone;
+  String name;
+
+  UserId({this.profileImage, this.sId, this.phone, this.name});
+
+  UserId.fromJson(Map<String, dynamic> json) {
+    profileImage = json['profile_image'];
+    sId = json['_id'];
+    phone = json['phone'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['profile_image'] = this.profileImage;
+    data['_id'] = this.sId;
+    data['phone'] = this.phone;
+    data['name'] = this.name;
     return data;
   }
 }

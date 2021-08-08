@@ -24,12 +24,19 @@ class Validation {
   static String validateEmail(String val) =>
       val.isEmail ? null : _starter + ' email address';
 
-  static String validatePassword(String val) =>
-      !val.contains(' ') && val.length >= 8 ? null : _starter + 'password';
+      
+  static String validatePassword(String val) {
+    if (val.length < 8) {
+      return 'Password should contain minimum 8 characters';
+    } else if (val.contains(' ')) {
+      return 'Password should not contain any white spaces';
+    } else {
+      return null;
+    }
+  }
 
   static String validatePin(String val) =>
       !val.contains(' ') && val.length == 4 ? null : _starter + 'pin';
-
 
   static String validateField(String val, String label,
       {bool isNum = false, int minlength = 3}) {

@@ -24,10 +24,10 @@ class DriverChatController extends GetxController {
     super.onInit();
     final res = Get.arguments;
     job = res['job_details'];
-    image = job.driverDetails.image == null
+    image = job.userId.profileImage == null
         ? ''
-        : makeImageLink(job.driverDetails.image);
-    driverId = job.driverDetails.sId;
+        : makeImageLink(job.userId.profileImage);
+    driverId = job.userId.sId;
     isCompleted = job.status == 'completed';
     messageCtrl.addListener(() {
       textEmpty.value = messageCtrl.text.isEmpty;
@@ -42,7 +42,7 @@ class DriverChatController extends GetxController {
           message: messageCtrl.text,
           date: setDate(),
           timeStamp: setTimeStamp(),
-          isUser: true);
+          isUser: false);
       await chatRepo.sendChat(chat, job.sId);
       messageCtrl.clear();
       isLoading(false);

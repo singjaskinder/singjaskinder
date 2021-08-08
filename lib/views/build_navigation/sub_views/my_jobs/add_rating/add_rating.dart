@@ -44,7 +44,7 @@ class AddRating extends StatelessWidget {
             Align(
               alignment: Alignment.topCenter,
               child: BuildText(
-                'Rate Driver',
+                'Rate User',
                 size: 3.5,
                 color: AppColors.white,
                 fontWeight: FontWeight.bold,
@@ -52,8 +52,6 @@ class AddRating extends StatelessWidget {
             ),
             BuildSizedBox(),
             Spacer(),
-            BuildText('Rate',
-                size: 2.5, color: AppColors.white, fontWeight: FontWeight.w400),
             BuildRateTile(
               currentSelected: controller.ratings,
               onSelected: (val) => controller.ratings = val,
@@ -62,6 +60,7 @@ class AddRating extends StatelessWidget {
               key: controller.formKey,
               child: BuildCustomTextField(
                 hint: 'Description',
+                centerCursor: true,
                 controller: controller.descriptionCtrl,
                 textInputAction: TextInputAction.done,
                 validator: (val) => Validation.validateField(
@@ -75,7 +74,7 @@ class AddRating extends StatelessWidget {
             ),
             BuildPrimaryButton(
               onTap: () => controller.addRate(),
-              label: 'Rate Driver',
+              label: 'Rate',
             ),
           ],
         ),

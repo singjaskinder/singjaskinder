@@ -66,7 +66,7 @@ class DriverChat extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: BuildText(
-                      controller.job.driverDetails.name,
+                      controller.job.userId.name,
                       size: 3.5,
                       color: AppColors.white,
                       fontWeight: FontWeight.bold,
@@ -102,14 +102,14 @@ class DriverChat extends StatelessWidget {
                                 margin: EdgeInsets.all(5),
                                 padding: EdgeInsets.all(5),
                                 decoration: BoxDecoration(
-                                    color: chat.isUser
+                                    color: !chat.isUser
                                         ? AppColors.lightViolet
                                         : AppColors.white,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
                                     boxShadow: [AppStyles.tileShadow]),
                                 child: Column(
-                                  crossAxisAlignment: chat.isUser
+                                  crossAxisAlignment: !chat.isUser
                                       ? CrossAxisAlignment.end
                                       : CrossAxisAlignment.start,
                                   children: [

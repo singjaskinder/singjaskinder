@@ -21,7 +21,7 @@ class BuildRetry extends StatelessWidget {
           BuildText('Something went wrong...'),
           BuildSizedBox(),
           Container(
-            width: SizeConfig.widthMultiplier * 20,
+            width: SizeConfig.widthMultiplier * 28,
             child: BuildPrimaryButton(
               onTap: onRetry,
               label: 'Retry',

@@ -32,7 +32,7 @@ class ApiHandler {
       {bool isDefault = true, String params}) async {
     final authToken = Preferences.getToken();
     params = params == null || params.isEmpty ? '' : '/' + params;
-
+    print(authToken);
     print(data);
     print('  ::::  ' + _baseUrl + endPoint + params);
     var response = await Dio().post(
@@ -56,6 +56,27 @@ class ApiHandler {
     print(data);
     print('  ::::  ' + _baseUrl + endPoint + params);
     var response = await Dio().put(
+      _baseUrl + endPoint + params,
+      options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+          contentType: isDefault ? 'application/json' : 'multipart/form-data'),
+      data: data,
+    );
+    print(response.statusCode.toString() + '  ::::  ' + _baseUrl + endPoint);
+    return ApiData(
+        data: jsonDecode(jsonEncode(response.data)),
+        statusCode: response.statusCode,
+        statusMessage: response.statusMessage,
+        url: _baseUrl + endPoint);
+  }
+
+  static Future<ApiData> deleteHttp(String endPoint, dynamic data,
+      {bool isDefault = true, String params}) async {
+    final authToken = Preferences.getToken();
+    params = params == null || params.isEmpty ? '' : '/' + params;
+    print(data);
+    print('  ::::  ' + _baseUrl + endPoint + params);
+    var response = await Dio().delete(
       _baseUrl + endPoint + params,
       options: Options(
           headers: {'Authorization': 'Bearer $authToken'},

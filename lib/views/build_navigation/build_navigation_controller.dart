@@ -29,17 +29,36 @@ class BuildNavigationController extends GetxController {
       route: Routes.myProfile,
     ),
     NavMenuM(
-      iconData: Feather.briefcase,
-      label: 'My Jobs',
-      route: Routes.myJobs,
+      iconData: Feather.file,
+      label: 'My Documents',
+      route: Routes.myDocuments,
     ),
-   
+    NavMenuM(
+      iconData: Feather.briefcase,
+      label: 'My Bidding',
+      route: Routes.myBiddings,
+    ),
+    NavMenuM(
+      iconData: Feather.loader,
+      label: 'Inprogress Jobs',
+      route: Routes.inprogressJobs,
+    ),
+    NavMenuM(
+      iconData: Feather.check_square,
+      label: 'Completed Jobs',
+      route: Routes.completedJobs,
+    ),
+    NavMenuM(
+      iconData: Feather.truck,
+      label: 'My Vehicles',
+      route: Routes.myVehicles,
+    ),
     NavMenuM(
       iconData: Feather.bell,
       label: 'Notifications',
       route: Routes.notifications,
     ),
-    
+
     NavMenuM(
       iconData: Feather.help_circle,
       label: 'Help',
@@ -130,7 +149,6 @@ class BuildNavigationController extends GetxController {
         }
       }
       isLoading(false);
-      checkProfileDetails();
     } on DioError catch (e) {
       print(e.response);
       print(e.response.statusCode);

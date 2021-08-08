@@ -29,9 +29,9 @@ class TrackingDetailsController extends GetxController {
     super.onInit();
     final res = Get.arguments;
     job = res['job_details'];
-    image = job.driverDetails.image == null
+    image = job.userId.profileImage == null
         ? ''
-        : makeImageLink(job.driverDetails.image);
+        : makeImageLink(job.userId.profileImage);
     sourceLocation = LatLng(
         job.pickLocation.coordinates[0], job.pickLocation.coordinates[1]);
     destinationLocation = LatLng(

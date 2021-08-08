@@ -27,9 +27,9 @@ class RatingM {
 class Ratings {
   String sId;
   String jobId;
-  DriverM driver;
-  String userId;
-  double rating;
+  String driverId;
+  UserId userId;
+  int rating;
   String review;
   String createdAt;
   String updatedAt;
@@ -38,7 +38,7 @@ class Ratings {
   Ratings(
       {this.sId,
       this.jobId,
-      this.driver,
+      this.driverId,
       this.userId,
       this.rating,
       this.review,
@@ -49,11 +49,10 @@ class Ratings {
   Ratings.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     jobId = json['job_id'];
-    driver = json['driver_id'] != null
-        ? new DriverM.fromJson(json['driver_id'])
-        : null;
-    userId = json['user_id'];
-    rating = json['rating'].toDouble();
+    driverId = json['driver_id'];
+    userId =
+        json['user_id'] != null ? new UserId.fromJson(json['user_id']) : null;
+    rating = json['rating'];
     review = json['review'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -64,10 +63,10 @@ class Ratings {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['job_id'] = this.jobId;
-    if (this.driver != null) {
-      data['driver_id'] = this.driver.toJson();
+    data['driver_id'] = this.driverId;
+    if (this.userId != null) {
+      data['user_id'] = this.userId.toJson();
     }
-    data['user_id'] = this.userId;
     data['rating'] = this.rating;
     data['review'] = this.review;
     data['createdAt'] = this.createdAt;
@@ -77,24 +76,27 @@ class Ratings {
   }
 }
 
-class DriverM {
+class UserId {
+  String profileImage;
   String sId;
+  String phone;
   String name;
-  String image;
 
-  DriverM({this.sId, this.name, this.image});
+  UserId({this.profileImage, this.sId, this.phone, this.name});
 
-  DriverM.fromJson(Map<String, dynamic> json) {
+  UserId.fromJson(Map<String, dynamic> json) {
+    profileImage = json['profile_image'];
     sId = json['_id'];
+    phone = json['phone'];
     name = json['name'];
-    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['profile_image'] = this.profileImage;
     data['_id'] = this.sId;
+    data['phone'] = this.phone;
     data['name'] = this.name;
-    data['image'] = this.image;
     return data;
   }
 }

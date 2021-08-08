@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as Dio;
 import 'package:dlivrDriver/apis/api_handler.dart';
 import 'package:dlivrDriver/apis/end_points.dart';
 import 'package:dlivrDriver/common/text.dart';
@@ -46,20 +46,21 @@ class AddAddressController extends GetxController {
         addressCtrl.text +
         '&&' +
         postalCtrl.text;
-    Preferences.saver.setString('address', profileDetailsController.address.value);
+    Preferences.saver
+        .setString('address', profileDetailsController.address.value);
   }
 
   void updateAddress() async {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
       try {
-        final data = {
+        final data = Dio.FormData.fromMap({
           'country': 'India',
           'state': stateCtrl.text.trim(),
           'city': cityCtrl.text.trim(),
           'address': addressCtrl.text.trim(),
           'postal_code': int.parse(postalCtrl.text.trim()),
-        };
+        });
         isLoading(true);
         await ApiHandler.putHttp(EndPoints.putUpdateDriver, data);
         setAddress();
@@ -69,11 +70,11 @@ class AddAddressController extends GetxController {
             label: 'OK',
             errored: false,
             cancellable: false);
-      } on DioError catch (e) {
+      } on Dio.DioError catch (e) {
         print(e);
         isLoading(false);
         BuildRetryBottomSheet(Get.context, updateAddress,
-            errored: true, cancellable: false);
+            autoClose: true, errored: true, cancellable: false);
       }
     }
   }

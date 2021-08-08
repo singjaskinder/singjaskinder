@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dlivrDriver/common/buttons.dart';
 import 'package:dlivrDriver/common/sized_box.dart';
 import 'package:dlivrDriver/common/text.dart';
@@ -5,6 +6,7 @@ import 'package:dlivrDriver/common/view_with_background.dart';
 import 'package:dlivrDriver/res/app_colors.dart';
 import 'package:dlivrDriver/res/app_styles.dart';
 import 'package:dlivrDriver/utils/local.dart';
+import 'package:dlivrDriver/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -88,10 +90,32 @@ class JobDetails extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: CachedNetworkImage(
+                                imageUrl: makeImageLink(
+                                    controller.job.userId.profileImage),
+                                width: SizeConfig.imageSizeMultiplier * 18,
+                                height: SizeConfig.imageSizeMultiplier * 18,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            BuildSizedBox(
+                              width: 3,
+                            ),
+                            BuildText(
+                              controller.job.userId.name.capitalize,
+                              size: 2.8,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ],
+                        ),
                         BuildText(
                           controller.job.packageTitle,
                           color: AppColors.medViolet,
-                          size: 3,
+                          size: 2.4,
                           fontWeight: FontWeight.bold,
                         ),
                         BuildText(
@@ -140,17 +164,13 @@ class JobDetails extends StatelessWidget {
                           ],
                         ),
                         BuildSizedBox(),
-                        BuildPrimaryButton(
-                            onTap: () => controller.toDecideWay(),
-                            label: controller.job.status.toLowerCase() ==
-                                    'upcoming'
-                                ? 'Driver Details'
-                                : 'Bidding List'),
-                        BuildSizedBox(),
-                        BuildPrimaryButton(
-                            isEnabled: controller.enableButton(),
-                            onTap: () => controller.confirmJobClose(),
-                            label: 'Close Job'),
+                        Obx(() => BuildPrimaryButton(
+                            isEnabled: controller.biddedprice.value == 0.0,
+                            onTap: () => controller.toBidprice(),
+                            label: controller.biddedprice.value != 0.0
+                                ? 'Already bidded ' +
+                                    makePrice(controller.biddedprice.value)
+                                : 'Bid your price'))
                       ],
                     )),
               ],

@@ -1,12 +1,16 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:dlivrDriver/apis/api_handler.dart';
 import 'package:dlivrDriver/apis/end_points.dart';
+import 'package:dlivrDriver/models/api_response/bidding_m.dart';
 import 'package:dlivrDriver/models/api_response/job_m.dart';
 import 'package:dlivrDriver/overlays/bottom_sheet.dart';
 import 'package:dlivrDriver/overlays/progress_dialog.dart';
 import 'package:dlivrDriver/res/app_colors.dart';
 import 'package:dlivrDriver/routes/app_routes.dart';
+import 'package:dlivrDriver/utils/functions/preferences.dart';
+import 'package:dlivrDriver/utils/local.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/home/home_controller.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/my_jobs/my_jobs_controller.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -20,10 +24,13 @@ class JobDetailsController extends GetxController {
   CameraPosition initialPos;
   LatLng sourceLocation;
   LatLng destinationLocation;
+  final biddedprice = (0.0).obs;
+  String id;
 
   @override
   void onInit() {
     super.onInit();
+    id = Preferences.getId();
     final res = Get.arguments;
     job = res['job_details'];
     sourceLocation = LatLng(
@@ -34,6 +41,11 @@ class JobDetailsController extends GetxController {
       target: sourceLocation,
       zoom: 14,
     );
+    for (Bidding bidding in job.bidding) {
+      if (bidding.driverId == id) {
+        biddedprice.value = bidding.bid;
+      }
+    }
   }
 
   @override
@@ -84,53 +96,14 @@ class JobDetailsController extends GetxController {
     );
   }
 
-  void confirmJobClose() async {
-    BuildRetryBottomSheet(Get.context, closeJob,
-        text: 'Are you sure you want to close this job?',
-        label: 'Yes',
-        errored: false,
-        cancellable: true);
-  }
-
-  void closeJob() async {
-    try {
-      isLoading(true);
-      await ApiHandler.putHttp(EndPoints.putJobCancel, null, params: job.sId);
-      MyJobsController myJobsController = Get.find();
-      myJobsController.update();
-      isLoading(false);
-      BuildRetryBottomSheet(Get.context, Get.back,
-          text: 'This Job has being closed',
-          label: 'OK',
-          done: true,
-          errored: false,
-          cancellable: false);
-    } catch (e) {
-      print(e);
-      isLoading(false);
-      BuildRetryBottomSheet(Get.context, closeJob,
-          errored: true, cancellable: true, autoClose: true);
+  void toBidprice() {
+    if(!checkProfileDetails()){
+    return;
     }
-  }
-
-  void toDecideWay() {
-    if (job.status.toLowerCase() == 'upcoming') {
-      toAssignDriverDetails();
-    } else {
-      toBidding();
+     if(!checkDocuments()){
+    return;
     }
+      Get.toNamed(Routes.bidPrice, arguments: {'job_details': job});
+
   }
-
-  bool enableButton() {
-    if (job.status.toLowerCase() == 'upcoming') {
-      return false;
-    } else if (job.status.toLowerCase() == 'cancelled') {
-      return false;
-    } else
-      return true;
-  }
-
-  void toBidding() {}
-
-  void toAssignDriverDetails() {}
 }

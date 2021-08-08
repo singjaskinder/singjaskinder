@@ -167,7 +167,7 @@ class TrackingDetails extends StatelessWidget {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(18))),
                                   child: BuildText(
-                                    controller.job.driverDetails.name,
+                                    controller.job.userId.name,
                                     color: AppColors.white,
                                     fontWeight: FontWeight.bold,
                                     size: 1.8,

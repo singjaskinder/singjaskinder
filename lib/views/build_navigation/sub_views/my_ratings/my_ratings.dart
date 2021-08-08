@@ -122,10 +122,14 @@ class BuildRatingTile extends StatelessWidget {
 
   int getRating(bool beforePoint) {
     final ratings = rating.rating.toString().split('.');
-    if (beforePoint) {
-      return int.parse(ratings[0]);
+    if (ratings.length > 1) {
+      if (beforePoint) {
+        return int.parse(ratings[0]);
+      } else {
+        return int.parse(ratings[1]);
+      }
     } else {
-      return int.parse(ratings[1]);
+      return int.parse(ratings[0]);
     }
   }
 
@@ -141,7 +145,7 @@ class BuildRatingTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          rating.driver.image == null
+          rating.userId.profileImage == null
               ? CircleAvatar(
                   radius: SizeConfig.imageSizeMultiplier * 8,
                   backgroundColor: AppColors.violet.withOpacity(0.4),
@@ -154,7 +158,7 @@ class BuildRatingTile extends StatelessWidget {
               : ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                   child: CachedNetworkImage(
-                    imageUrl: makeImageLink(rating.driver.image),
+                    imageUrl: makeImageLink(rating.userId.profileImage),
                     width: SizeConfig.imageSizeMultiplier * 16,
                     height: SizeConfig.imageSizeMultiplier * 16,
                     fit: BoxFit.cover,
@@ -167,7 +171,7 @@ class BuildRatingTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               BuildText(
-                rating.driver.name ?? '',
+                rating.userId.name ?? '',
                 color: AppColors.medViolet,
                 fontWeight: FontWeight.bold,
                 size: 3.2,
