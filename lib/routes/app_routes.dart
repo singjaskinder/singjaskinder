@@ -1,5 +1,6 @@
 import 'package:dlivrDriver/views/auth/change_password/change_password.dart';
 import 'package:dlivrDriver/views/auth/email_reset_password/email_reset_password.dart';
+import 'package:dlivrDriver/views/auth/input_pin/input_pin.dart';
 import 'package:dlivrDriver/views/auth/mobile_number/mobile_number.dart';
 import 'package:dlivrDriver/views/auth/otp_code/otp_code.dart';
 import 'package:dlivrDriver/views/auth/reset_otp_code/reset_otp_code.dart';
@@ -41,6 +42,7 @@ import '../views/landing/landing.dart';
 class Routes {
   static const landing = '/landing';
   static const login = '/login';
+  static const inputPin = '/inputPin' ;
   static const register = '/register';
   static const mobileNumber = '/mobileNumber';
   static const otpCode = '/otpCode';
@@ -85,6 +87,7 @@ class Routes {
   static final List<GetPage> pages = [
     GetPage(name: landing, page: () => Landing()),
     GetPage(name: login, page: () => Login()),
+    GetPage(name: inputPin, page: () => InputPin()),
     GetPage(name: mobileNumber, page: () => MobileNumber()),
     GetPage(name: otpCode, page: () => OtpCode()),
     GetPage(name: emailresetPassword, page: () => EmailResetPassword()),

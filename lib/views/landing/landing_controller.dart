@@ -1,4 +1,5 @@
 import 'package:dlivrDriver/routes/app_routes.dart';
+import 'package:dlivrDriver/utils/functions/preferences.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,11 +12,22 @@ class LandingController extends GetxController {
 
   void check() async {
     final saved = await SharedPreferences.getInstance();
-    Future.delayed(Duration(seconds: 0), () {
+    final savedPin = saved.getString('pin') ?? '';
+    Future.delayed(Duration(seconds: 3), () {
       final authToken = saved.getString('auth_token');
-      Get.offNamed(authToken == null || authToken == 'NA' || authToken.isEmpty
-          ? Routes.login
-          : Routes.navigator);
+      if (authToken != null || authToken != 'NA' || authToken.isNotEmpty) {
+        if(savedPin.isNotEmpty){
+        Get.offNamed(Routes.inputPin);
+
+        }
+        else{
+        Get.offNamed(Routes.navigator);
+
+        }
+      } else {
+        Get.offNamed(Routes.login);
+      }
+     
     });
   }
 }

@@ -4,6 +4,7 @@ import 'package:dlivrDriver/apis/end_points.dart';
 import 'package:dlivrDriver/common/buttons.dart';
 import 'package:dlivrDriver/common/sized_box.dart';
 import 'package:dlivrDriver/common/text.dart';
+import 'package:dlivrDriver/models/api_response/driver_m.dart';
 import 'package:dlivrDriver/models/api_response/user_m.dart';
 import 'package:dlivrDriver/models/nav_menu.dart';
 import 'package:dlivrDriver/overlays/bottom_sheet.dart';
@@ -139,6 +140,30 @@ class BuildNavigationController extends GetxController {
       userName.value = Preferences.getName();
       imageUrl.value = Preferences.getImage() ?? '';
       String rating = Preferences.getRatings();
+      final details = DriverM.fromJson(res.data).details;
+      final primaryDoc = details[0].primaryDocument;
+      final secondaryDoc = details[0].secondaryDocument;
+      final additionalDoc = details[0].additionalDocument;
+      if (primaryDoc.isNotEmpty) {
+        Preferences.saver.setString(
+            'driving_license', makeImageLink(primaryDoc[0].drivingLicense));
+        Preferences.saver
+            .setString('passport', makeImageLink(primaryDoc[0].passport));
+        Preferences.saver.setString('australian_citizenship',
+            makeImageLink(secondaryDoc[0].australianCitizenship));
+        Preferences.saver.setString(
+            'australian_visa', makeImageLink(secondaryDoc[0].australianVisa));
+        Preferences.saver.setString(
+            'residence_proof', makeImageLink(secondaryDoc[0].residenceProof));
+        Preferences.saver
+            .setString('bank_card', makeImageLink(secondaryDoc[0].bankCard));
+        Preferences.saver
+            .setString('medicare', makeImageLink(secondaryDoc[0].medicare));
+        Preferences.saver.setString('federal_police_check',
+            makeImageLink(secondaryDoc[0].federalPoliceCheck));
+        Preferences.saver.setString(
+            'driving_history', makeImageLink(additionalDoc[0].drivingHistory));
+      }
       if (rating.isEmpty) {
       } else {
         final ratingContent = rating.split('.')[0];

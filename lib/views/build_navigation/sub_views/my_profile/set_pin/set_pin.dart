@@ -59,6 +59,8 @@ class SetPin extends StatelessWidget {
                 () => BuildCustomTextField(
                   hint: '4-digit old pin',
                   controller: controller.oldPinCtrl,
+                  maxLength: 4,
+                  centerCursor: true,
                   isPassword: !controller.showOldPin.value,
                   textInputAction: TextInputAction.done,
                   textInputType: TextInputType.number,
@@ -81,6 +83,8 @@ class SetPin extends StatelessWidget {
               () => BuildCustomTextField(
                 hint: '4-digit new Pin',
                 controller: controller.pinCtrl1,
+                maxLength: 4,
+                centerCursor: true,
                 isPassword: !controller.showPin1.value,
                 textInputAction: TextInputAction.next,
                 textInputType: TextInputType.number,
@@ -100,6 +104,8 @@ class SetPin extends StatelessWidget {
               () => BuildCustomTextField(
                 hint: '4-digit confirm Pin',
                 controller: controller.pinCtrl2,
+                maxLength: 4,
+                centerCursor: true,
                 isPassword: !controller.showPin2.value,
                 textInputAction: TextInputAction.done,
                 textInputType: TextInputType.number,

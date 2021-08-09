@@ -169,30 +169,34 @@ class MyDocumentsController extends GetxController {
       final secondaryDoc = details[0].secondaryDocument;
       final additionalDoc = details[0].additionalDocument;
       if (primaryDoc.isNotEmpty) {
-        Preferences.saver
-            .setString('driving_license', primaryDoc[0].drivingLicense);
-        Preferences.saver.setString('passport', primaryDoc[0].passport);
         Preferences.saver.setString(
-            'australian_citizenship', secondaryDoc[0].australianCitizenship);
+            'driving_license', makeImageLink(primaryDoc[0].drivingLicense));
         Preferences.saver
-            .setString('australian_visa', secondaryDoc[0].australianVisa);
-        Preferences.saver
-            .setString('residence_proof', secondaryDoc[0].residenceProof);
-        Preferences.saver.setString('bank_card', secondaryDoc[0].bankCard);
-        Preferences.saver.setString('medicare', secondaryDoc[0].medicare);
+            .setString('passport', makeImageLink(primaryDoc[0].passport));
+        Preferences.saver.setString('australian_citizenship',
+            makeImageLink(secondaryDoc[0].australianCitizenship));
         Preferences.saver.setString(
-            'federal_police_check', secondaryDoc[0].federalPoliceCheck);
+            'australian_visa', makeImageLink(secondaryDoc[0].australianVisa));
+        Preferences.saver.setString(
+            'residence_proof', makeImageLink(secondaryDoc[0].residenceProof));
         Preferences.saver
-            .setString('driving_history', additionalDoc[0].drivingHistory);
-        docs[0].imageData = primaryDoc[0].drivingLicense;
-        docs[1].imageData = primaryDoc[0].passport;
-        docs[2].imageData = secondaryDoc[0].australianCitizenship;
-        docs[3].imageData = secondaryDoc[0].australianVisa;
-        docs[4].imageData = secondaryDoc[0].residenceProof;
-        docs[5].imageData = secondaryDoc[0].bankCard;
-        docs[6].imageData = secondaryDoc[0].medicare;
-        docs[7].imageData = secondaryDoc[0].federalPoliceCheck;
-        docs[8].imageData = additionalDoc[0].drivingHistory;
+            .setString('bank_card', makeImageLink(secondaryDoc[0].bankCard));
+        Preferences.saver
+            .setString('medicare', makeImageLink(secondaryDoc[0].medicare));
+        Preferences.saver.setString('federal_police_check',
+            makeImageLink(secondaryDoc[0].federalPoliceCheck));
+        Preferences.saver.setString(
+            'driving_history', makeImageLink(additionalDoc[0].drivingHistory));
+        docs[0].imageData = makeImageLink(primaryDoc[0].drivingLicense);
+        docs[1].imageData = makeImageLink(primaryDoc[0].passport);
+        docs[2].imageData =
+            makeImageLink(secondaryDoc[0].australianCitizenship);
+        docs[3].imageData = makeImageLink(secondaryDoc[0].australianVisa);
+        docs[4].imageData = makeImageLink(secondaryDoc[0].residenceProof);
+        docs[5].imageData = makeImageLink(secondaryDoc[0].bankCard);
+        docs[6].imageData = makeImageLink(secondaryDoc[0].medicare);
+        docs[7].imageData = makeImageLink(secondaryDoc[0].federalPoliceCheck);
+        docs[8].imageData = makeImageLink(additionalDoc[0].drivingHistory);
       }
       update();
       isLoading(false);

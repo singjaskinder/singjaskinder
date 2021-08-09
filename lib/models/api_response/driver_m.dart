@@ -36,7 +36,7 @@ class Details {
   String phone;
   String password;
   String pin;
-  Null image;
+  String image;
   List<Addresses> addresses;
   String fcmToken;
   String device;
@@ -87,12 +87,6 @@ class Details {
     password = json['password'];
     pin = json['pin'];
     image = json['image'];
-    if (json['addresses'] != null) {
-      addresses = new List<Addresses>();
-      json['addresses'].forEach((v) {
-        addresses.add(new Addresses.fromJson(v));
-      });
-    }
     fcmToken = json['fcm_token'];
     device = json['device'];
     deviceId = json['device_id'];
@@ -178,7 +172,6 @@ class Addresses {
 
   Addresses.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    address = json['address'];
     state = json['state'];
     city = json['city'];
     postalCode = json['postal_code'];
@@ -188,7 +181,6 @@ class Addresses {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
-    data['address'] = this.address;
     data['state'] = this.state;
     data['city'] = this.city;
     data['postal_code'] = this.postalCode;

@@ -19,9 +19,6 @@ class SetPinController extends GetxController {
   void onInit() {
     super.onInit();
     savedPin = Preferences.saver.getString('pin') ?? '';
-    print('--------------savedPin');
-    print(savedPin + 'dd');
-    print('--------------savedPin');
     isSavedPin = savedPin.isNotEmpty;
   }
 
