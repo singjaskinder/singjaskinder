@@ -153,7 +153,7 @@ class InprogressJobDetailsController extends GetxController {
       BuildRetryBottomSheet(Get.context, () {
         isRateDone.value = true;
       },
-          text: 'Rating submitted for driver',
+          text: 'Rating submitted for user',
           label: 'OK',
           done: true,
           errored: false,

@@ -12,22 +12,22 @@ class LandingController extends GetxController {
 
   void check() async {
     final saved = await SharedPreferences.getInstance();
+    String authToken = saved.getString('auth_token') ?? '';
+    if (authToken.contains('NA')) {
+      authToken = '';
+    }
     final savedPin = saved.getString('pin') ?? '';
     Future.delayed(Duration(seconds: 3), () {
-      final authToken = saved.getString('auth_token');
-      if (authToken != null || authToken != 'NA' || authToken.isNotEmpty) {
-        if(savedPin.isNotEmpty){
-        Get.offNamed(Routes.inputPin);
-
-        }
-        else{
-        Get.offNamed(Routes.navigator);
-
+      print(authToken);
+      if (authToken.isNotEmpty) {
+        if (savedPin.isNotEmpty) {
+          Get.offNamed(Routes.inputPin);
+        } else {
+          Get.offNamed(Routes.navigator);
         }
       } else {
         Get.offNamed(Routes.login);
       }
-     
     });
   }
 }

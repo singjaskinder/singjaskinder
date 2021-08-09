@@ -76,13 +76,13 @@ class _BuildNavigationState extends State<BuildNavigation>
                 Container(
                   child: Column(
                     children: [
-                      Obx(()=>
-                         BuildUserImage(
+                      Obx(
+                        () => BuildUserImage(
                           imageData: controller.imageUrl.value,
                         ),
                       ),
-   Obx(()=>
-                         BuildText(
+                      Obx(
+                        () => BuildText(
                           controller.userName.value ?? 'Hello there!',
                           size: 2.4,
                           color: AppColors.white,
@@ -143,7 +143,7 @@ class _BuildNavigationState extends State<BuildNavigation>
                     padding: EdgeInsets.symmetric(vertical: 5),
                     itemBuilder: (_, i) {
                       return Container(
-                        margin: EdgeInsets.only(right: 5, bottom: 10),
+                        margin: EdgeInsets.only(right: 60, bottom: 10),
                         height: SizeConfig.heightMultiplier * 6,
                         child: Material(
                           // color: i == controller.currSideNavIndex.value

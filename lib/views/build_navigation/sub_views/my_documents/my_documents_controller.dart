@@ -149,7 +149,6 @@ class MyDocumentsController extends GetxController {
       BuildRetryBottomSheet(Get.context, Get.back,
           text: 'Details Updated',
           label: 'OK',
-          done: true,
           errored: true,
           cancellable: false);
     } on Dio.DioError catch (e) {

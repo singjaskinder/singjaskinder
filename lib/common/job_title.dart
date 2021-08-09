@@ -54,7 +54,7 @@ class BuildJobTile extends StatelessWidget {
                 SizedBox(
                   width: SizeConfig.widthMultiplier * 70,
                   child: BuildText(
-                    job.packageTitle + 'wefmwefwjp',
+                    job.packageTitle,
                     color: AppColors.darkViolet,
                     fontWeight: FontWeight.bold,
                     size: 2.4,

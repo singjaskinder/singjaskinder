@@ -39,6 +39,7 @@ class BidPriceController extends GetxController {
       };
       BuildRetryBottomSheet(Get.context, onPos,
           text: 'Your bidding details \nis submitted',
+          label: 'OK',
           errored: true,
           cancellable: false,
           autoClose: true);
