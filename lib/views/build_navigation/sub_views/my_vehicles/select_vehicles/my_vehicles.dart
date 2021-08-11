@@ -7,6 +7,7 @@ import 'package:dlivrDriver/common/text.dart';
 import 'package:dlivrDriver/common/view_with_background.dart';
 import 'package:dlivrDriver/models/api_response/my_vehicle_m.dart';
 import 'package:dlivrDriver/models/api_response/notification_m.dart';
+import 'package:dlivrDriver/models/api_response/vehicle_m.dart';
 import 'package:dlivrDriver/res/app_colors.dart';
 import 'package:dlivrDriver/res/app_styles.dart';
 import 'package:dlivrDriver/utils/local.dart';
@@ -21,6 +22,7 @@ class MyVehicles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(MyVehiclesController());
+    controller.getWidth();
     return BuildViewWithBackground(
       hasBackButton: true,
       haveSafeArea: false,
@@ -53,121 +55,108 @@ class MyVehicles extends StatelessWidget {
           ),
           BuildSizedBox(),
           Expanded(
-            child: GetBuilder<MyVehiclesController>(
-              builder: (controller) {
-                return FutureBuilder<List<MyVehiclesM>>(
-                    future: controller.getVehicles(),
-                    builder: (_, snap) {
-                      if (snap.hasData) {
-                        if (snap.data.isEmpty) {
-                          return Center(
-                              child: BuildText('No vehciles added',
-                                  color: AppColors.white,
-                                  fontFamily: AppStyles.robotoB));
-                        }
-
-                        return ListView.separated(
-                            itemCount: snap.data.length,
-                            padding: EdgeInsets.zero,
-                            separatorBuilder: (_, i) {
-                              return SizedBox(
-                                height: SizeConfig.heightMultiplier,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  BuildSizedBox(
+                    height: 2,
+                  ),
+                  GetBuilder<MyVehiclesController>(
+                    builder: (controller) {
+                      return FutureBuilder<List<Vehicles>>(
+                          future: controller.getVehiclesCategory(),
+                          builder: (_, snap) {
+                            if (snap.hasData) {
+                              if (snap.data.isEmpty) {
+                                return Center(
+                                    child: BuildText('No vehicles added',
+                                        color: AppColors.white,
+                                        fontFamily: AppStyles.robotoB));
+                              }
+                              return Wrap(
+                                runSpacing: controller.runSpacing,
+                                spacing: controller.spacing,
+                                alignment: WrapAlignment.center,
+                                children: snap.data.map((vehicle) {
+                                  return BuildVehicleCatTile(
+                                    vehicle,
+                                    onTap: () => controller.toAUVehicle(vehicle),
+                                    width: controller.width,
+                                  );
+                                }).toList(),
                               );
-                            },
-                            itemBuilder: (_, i) {
-                              final myVehicle = snap.data[i];
-
-                              return BuildMyVehicleTile(myVehicle,
-                                  onTap: () =>
-                                      controller.toAUVehicle(myVehicle));
-                            });
-                      } else if (snap.hasError) {
-                        print(snap.error);
-                        return Center(
-                            child:
-                                BuildRetry(onRetry: () => controller.update()));
-                      } else {
-                        return BuildCircularLoading();
-                      }
-                    });
-              },
+                            } else if (snap.hasError) {
+                              print(snap.error);
+                              return Center(
+                                  child: BuildRetry(
+                                      onRetry: () => controller.update()));
+                            } else {
+                              return Center(
+                                  heightFactor: 3.5,
+                                  child: BuildCircularLoading());
+                            }
+                          });
+                    },
+                  ),
+                  BuildSizedBox(
+                    height: 2,
+                  ),
+                ],
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: BuildPrimaryButton(
-                onTap: () => controller.toSelectVehicle(),
-                label: 'Add Vehicle +'),
-          )
         ],
       ),
     );
   }
 }
 
-class BuildMyVehicleTile extends StatelessWidget {
-  const BuildMyVehicleTile(this.myVehicle, {this.onTap, Key key})
+class BuildVehicleCatTile extends StatelessWidget {
+  const BuildVehicleCatTile(this.vehicle, {this.onTap, this.width, Key key})
       : super(key: key);
-  final MyVehiclesM myVehicle;
+  final Vehicles vehicle;
   final Function onTap;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-            boxShadow: [AppStyles.tileShadow]),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: BuildText(
-                makeDateTime(myVehicle.createdAt),
-                color: AppColors.darkViolet,
-                size: 1.6,
-              ),
-            ),
-            Row(
-              children: [
-                CachedNetworkImage(
+    return Container(
+      width: width - 15,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: AppColors.white.withOpacity(0.7),
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+              boxShadow: [AppStyles.tileShadow]),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(vehicle.updatedAt.isNotEmpty ? 0 : 5),
+                child: CachedNetworkImage(
                   placeholder: (_, v) => BuildCircularLoading(),
-                  imageUrl: makeImageLink(myVehicle.vehicleImage),
-                  width: SizeConfig.imageSizeMultiplier * 25,
+                  imageUrl: makeImageLink(vehicle.image),
+                  color:
+                      vehicle.updatedAt.isNotEmpty ? AppColors.medViolet : null,
+                  width: vehicle.updatedAt.isNotEmpty
+                      ? null
+                      : SizeConfig.imageSizeMultiplier * 25,
                   height: SizeConfig.imageSizeMultiplier * 25,
-                  fit: BoxFit.cover,
+                  fit: vehicle.updatedAt.isNotEmpty ? null : BoxFit.cover,
                 ),
-                BuildSizedBox(
-                  width: 3,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BuildText(
-                      myVehicle.name,
-                      color: AppColors.darkViolet,
-                      fontWeight: FontWeight.bold,
-                      size: 2.8,
-                    ),
-                    BuildText(
-                      myVehicle.color,
-                      color: AppColors.darkViolet,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    BuildText(
-                      myVehicle.type,
-                      color: AppColors.darkViolet,
-                    ),
-                  ],
-                )
-              ],
-            )
-          ],
+              ),
+              BuildSizedBox(),
+              BuildText(
+                vehicle.name.capitalize,
+                color: AppColors.medViolet,
+                fontWeight: FontWeight.bold,
+                size: 2.5,
+              ),
+            ],
+          ),
         ),
       ),
     );

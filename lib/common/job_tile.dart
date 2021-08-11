@@ -52,7 +52,7 @@ class BuildJobTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: SizeConfig.widthMultiplier * 70,
+                  width: SizeConfig.widthMultiplier * 60,
                   child: BuildText(
                     job.packageTitle,
                     color: AppColors.darkViolet,

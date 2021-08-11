@@ -10,6 +10,7 @@ import 'package:dlivrDriver/res/app_colors.dart';
 import 'package:dlivrDriver/res/app_styles.dart';
 import 'package:dlivrDriver/utils/local.dart';
 import 'package:dlivrDriver/utils/size_config.dart';
+import 'package:dlivrDriver/views/build_navigation/build_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
@@ -25,8 +26,8 @@ class MyRatings extends StatelessWidget {
       hasBackButton: true,
       haveSafeArea: false,
       positionedImage: Positioned(
-        bottom: 40,
-        top: 200,
+        bottom: 80,
+        top: 150,
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Opacity(
@@ -37,7 +38,7 @@ class MyRatings extends StatelessWidget {
           ),
         ),
       ),
-      gradient: AppStyles.lightGradient,
+      gradient: AppStyles.darkGradient,
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         BuildSizedBox(),
         Padding(
@@ -53,19 +54,10 @@ class MyRatings extends StatelessWidget {
           imageData: controller.imageUrl,
         ),
         BuildText(
-          controller.userName,
+          controller.userName.capitalize,
           size: 2.4,
           color: AppColors.white,
           fontWeight: FontWeight.bold,
-        ),
-        Visibility(
-          visible: !controller.isEmpty.value,
-          child: BuildText(
-            'Total Ratings: ',
-            size: 2.8,
-            color: AppColors.white,
-            fontWeight: FontWeight.bold,
-          ),
         ),
         BuildSizedBox(
           height: 2,
@@ -84,21 +76,128 @@ class MyRatings extends StatelessWidget {
                                 color: AppColors.white,
                                 fontFamily: AppStyles.robotoB));
                       }
-                      controller.isEmpty.value = false;
-                      return ListView.separated(
-                          padding: EdgeInsets.zero,
-                          itemCount: snap.data.length,
-                          separatorBuilder: (_, i) {
-                            return SizedBox(
-                              height: SizeConfig.heightMultiplier,
-                            );
-                          },
-                          itemBuilder: (_, i) {
-                            final rating = snap.data[i];
-                            return BuildRatingTile(
-                              rating,
-                            );
-                          });
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Container(
+                              margin: EdgeInsets.all(5),
+                              padding: EdgeInsets.all(8),
+                              width: SizeConfig.widthMultiplier * 90,
+                              decoration: BoxDecoration(
+                                  color: AppColors.black.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: AppColors.yellow,
+                                      ),
+                                      BuildSizedBox(),
+                                      BuildText(
+                                        controller.rating.value
+                                            .toStringAsFixed(1),
+                                        color: AppColors.lightViolet,
+                                        fontWeight: FontWeight.bold,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.thumb_up,
+                                        color: AppColors.yellow,
+                                      ),
+                                      BuildSizedBox(),
+                                      BuildText(
+                                        controller.getThumbs(true),
+                                        color: AppColors.lightViolet,
+                                        fontWeight: FontWeight.bold,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.thumb_down,
+                                        color: AppColors.yellow,
+                                      ),
+                                      BuildSizedBox(),
+                                      BuildText(
+                                        controller.getThumbs(false),
+                                        color: AppColors.lightViolet,
+                                        fontWeight: FontWeight.bold,
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          BuildSizedBox(
+                            height: 2,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 20),
+                            child: BuildText(
+                              'Badges:',
+                              size: 2.5,
+                              color: AppColors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          GetBuilder<MyRatingsController>(
+                            builder: (_) {
+                              return Container(
+                                height: SizeConfig.heightMultiplier * 17,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: controller.badges.length,
+                                    itemBuilder: (_, i) {
+                                      final badge = controller.badges[i];
+                                      return BuildBadge(badge, true,
+                                          isSelected: true, onTap: () => null);
+                                    }),
+                              );
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 20),
+                            child: BuildText(
+                              'Reviews:',
+                              size: 2.5,
+                              color: AppColors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Container(
+                            height: SizeConfig.heightMultiplier * 16,
+                            child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                padding: EdgeInsets.zero,
+                                itemCount: snap.data.length,
+                                separatorBuilder: (_, i) {
+                                  return SizedBox(
+                                    height: SizeConfig.heightMultiplier,
+                                  );
+                                },
+                                itemBuilder: (_, i) {
+                                  final rating = snap.data[i];
+                                  return BuildRatingTile(
+                                    rating,
+                                  );
+                                }),
+                          ),
+                        ],
+                      );
                     } else if (snap.hasError) {
                       print(snap.error);
                       return Center(
@@ -122,92 +221,93 @@ class BuildRatingTile extends StatelessWidget {
 
   int getRating(bool beforePoint) {
     final ratings = rating.rating.toString().split('.');
-    if (ratings.length > 1) {
-      if (beforePoint) {
-        return int.parse(ratings[0]);
-      } else {
-        return int.parse(ratings[1]);
-      }
-    } else {
+    if (beforePoint) {
       return int.parse(ratings[0]);
+    } else {
+      return int.parse(ratings[1]);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: SizeConfig.widthMultiplier * 60,
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.all(Radius.circular(12)),
           boxShadow: [AppStyles.tileShadow]),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          rating.userId.profileImage == null
-              ? CircleAvatar(
-                  radius: SizeConfig.imageSizeMultiplier * 8,
-                  backgroundColor: AppColors.violet.withOpacity(0.4),
-                  child: Icon(
-                    Feather.user,
-                    color: AppColors.violet,
-                    size: SizeConfig.imageSizeMultiplier * 5,
-                  ),
-                )
-              : ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                  child: CachedNetworkImage(
-                    imageUrl: makeImageLink(rating.userId.profileImage),
-                    width: SizeConfig.imageSizeMultiplier * 16,
-                    height: SizeConfig.imageSizeMultiplier * 16,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-          BuildSizedBox(width: 3),
-          Expanded(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              BuildText(
-                rating.userId.name ?? '',
-                color: AppColors.medViolet,
-                fontWeight: FontWeight.bold,
-                size: 3.2,
-              ),
-              Row(
-                children: [
-                  for (int i = 0; i < getRating(true); i++)
-                    Icon(
-                      Icons.star,
-                      color: AppColors.yellow,
-                      size: SizeConfig.imageSizeMultiplier * 5,
-                    ),
-                  getRating(false) == 0
-                      ? BuildSizedBox()
-                      : Icon(
-                          Icons.star_half,
-                          color: AppColors.yellow,
-                          size: SizeConfig.imageSizeMultiplier * 5,
-                        ),
-                ],
-              ),
-              BuildText(
-                rating.review,
-                color: AppColors.medViolet,
-                size: 2.25,
-              ),
-              BuildSizedBox(),
-              BuildText(
-                makeDateTime(rating.createdAt),
-                color: AppColors.medViolet,
-                size: 1.8,
-              ),
-            ],
-          )),
+          BuildText(rating.review, color: AppColors.medViolet, size: 3),
+          BuildSizedBox(),
+          BuildText(
+            makeDateTime(rating.createdAt),
+            color: AppColors.medViolet,
+            size: 1.4,
+          ),
         ],
       ),
+    );
+  }
+}
+
+class BuildBadge extends StatelessWidget {
+  const BuildBadge(this.badge, this.isDriver,
+      {this.isSelected, this.onTap, Key key})
+      : super(key: key);
+  final Function onTap;
+  final bool isSelected;
+  final bool isDriver;
+  final BadgesM badge;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(children: [
+        Stack(children: [
+          Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Opacity(
+              opacity: isSelected ? 1 : 0.6,
+              child: Container(
+                decoration: BoxDecoration(),
+                child: Image.asset(
+                  badge.path,
+                  width: SizeConfig.imageSizeMultiplier * 20,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          !isDriver
+              ? SizedBox()
+              : Positioned(
+                  right: 0,
+                  child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: AppColors.black.withOpacity(0.5)),
+                      child: BuildText(
+                        badge.count.toString(),
+                        size: 1.6,
+                        color: AppColors.white,
+                        fontWeight: FontWeight.bold,
+                      ))),
+        ]),
+        Container(
+          child: BuildText(
+            badge.label,
+            textAlign: TextAlign.center,
+            size: 1.8,
+          ),
+        ),
+      ]),
     );
   }
 }

@@ -10,6 +10,7 @@ import 'package:dlivrDriver/views/build_navigation/sub_views/help/help.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/home/home.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/inprogress_jobs/inprogress_job_details/inprogress_job_details.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/inprogress_jobs/inprogress_jobs.dart';
+import 'package:dlivrDriver/views/build_navigation/sub_views/inprogress_jobs/navigate_map/navigate_map.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/my_biddings/bidded_job_details/bidded_job_details.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/my_biddings/my_biddings.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/my_documents/my_documents.dart';
@@ -27,7 +28,6 @@ import 'package:dlivrDriver/views/build_navigation/sub_views/my_profile/set_pin/
 import 'package:dlivrDriver/views/build_navigation/sub_views/my_profile/update_password/update_password.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/my_ratings/my_ratings.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/my_vehicles/au_vehicle/au_vehicle.dart';
-import 'package:dlivrDriver/views/build_navigation/sub_views/my_vehicles/select_vehicles.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/my_vehicles/select_vehicles/my_vehicles.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/notifications/notifications.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/privacy_policy/privacy_policy.dart';
@@ -42,7 +42,7 @@ import '../views/landing/landing.dart';
 class Routes {
   static const landing = '/landing';
   static const login = '/login';
-  static const inputPin = '/inputPin' ;
+  static const inputPin = '/inputPin';
   static const register = '/register';
   static const mobileNumber = '/mobileNumber';
   static const otpCode = '/otpCode';
@@ -76,7 +76,9 @@ class Routes {
   static const jobAddedDetails = '/jobAddedDetails';
   static const jobDetails = '/jobDetails';
   static const biddedJobDetails = '/biddedJobDetails';
-  static const inprogressJobDetails = '/InprogressJobDetails';
+  static const inprogressJobDetails = '/inProgressJobDetails';
+  static const navigateMap = '/navigateMap';
+
   static const driverChat = '/driverChat';
   static const trackingDetails = '/trackingDetails';
   static const addRating = '/addRating';
@@ -109,7 +111,6 @@ class Routes {
     GetPage(name: inprogressJobs, page: () => InprogressJobs()),
     GetPage(name: completedJobs, page: () => CompletedJobs()),
     GetPage(name: myVehicles, page: () => MyVehicles()),
-    GetPage(name: selectVehicle, page: () => SelectVehicles()),
     GetPage(name: auVehicle, page: () => AUVehicle()),
     GetPage(name: notifications, page: () => ViewNotifications()),
     GetPage(name: help, page: () => Help()),
@@ -120,6 +121,7 @@ class Routes {
     GetPage(name: jobDetails, page: () => JobDetails()),
     GetPage(name: biddedJobDetails, page: () => BiddedJobDetails()),
     GetPage(name: inprogressJobDetails, page: () => InprogressJobDetails()),
+    GetPage(name: navigateMap, page: () => NavigateMap()),
     GetPage(name: trackingDetails, page: () => TrackingDetails()),
     GetPage(name: driverChat, page: () => DriverChat()),
     GetPage(name: addRating, page: () => AddRating()),

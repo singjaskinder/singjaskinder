@@ -7,6 +7,7 @@ import 'package:dlivrDriver/overlays/progress_dialog.dart';
 import 'package:dlivrDriver/res/app_colors.dart';
 import 'package:dlivrDriver/routes/app_routes.dart';
 import 'package:dlivrDriver/utils/functions/preferences.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -15,6 +16,9 @@ class BiddedJobDetailsController extends GetxController {
   Jobs job;
   Completer<GoogleMapController> mapController = Completer();
   final polylines = Set<Polyline>().obs;
+  final markers = Set<Marker>().obs;
+  BitmapDescriptor startIcon;
+  BitmapDescriptor endIcon;
   CameraPosition initialPos;
   LatLng sourceLocation;
   LatLng destinationLocation;
@@ -77,6 +81,24 @@ class BiddedJobDetailsController extends GetxController {
       sourceLocation = destinationLocation;
       destinationLocation = tempLocation;
     }
+    await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(10, 10)),
+            'assets/images/markers/start.png')
+        .then((icon) {
+      startIcon = icon;
+    });
+    await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(10, 10)),
+            'assets/images/markers/end.png')
+        .then((icon) {
+      endIcon = icon;
+    });
+    markers.add(Marker(
+        markerId: MarkerId('scr1'), position: sourceLocation, icon: startIcon));
+    markers.add(Marker(
+        markerId: MarkerId('des1'),
+        position: destinationLocation,
+        icon: endIcon));
 
     final GoogleMapController mapController1 = await mapController.future;
     mapController1.animateCamera(

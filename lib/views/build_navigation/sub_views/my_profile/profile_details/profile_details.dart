@@ -14,13 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'profile_details_controller.dart';
-class ProfileDetails extends StatelessWidget {
-const ProfileDetails({Key key}) : super(key: key);
 
-            @override
-            Widget build(BuildContext context) {
-            final controller = Get.put(ProfileDetailsController());
-              return BuildViewWithBackground(
+class ProfileDetails extends StatelessWidget {
+  const ProfileDetails({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.put(ProfileDetailsController());
+    return BuildViewWithBackground(
       hasBackButton: true,
       haveSafeArea: false,
       positionedImage: Positioned(
@@ -133,10 +134,7 @@ const ProfileDetails({Key key}) : super(key: key);
                                     size: 2.6,
                                   ),
                                   BuildText(
-                                    controller
-                                        .getAddress()
-                                        .postalCode
-                                        .toString(),
+                                    controller.getAddress().street.toString(),
                                     color: AppColors.darkViolet,
                                     fontWeight: FontWeight.bold,
                                     size: 2.2,

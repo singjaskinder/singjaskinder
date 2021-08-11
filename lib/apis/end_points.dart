@@ -16,8 +16,10 @@ class EndPoints {
   static const getVehicles = 'driver/vehicle/all';
   static const putUpdateVehicle = 'driver/vehicle/update';
   static const deleteUpdateVehicle = 'driver/vehicle';
+
   static const postReview = 'driver/review';
   static const getReviews = 'driver/reviews';
+  static const reviewedDetails = 'driver/reviewedDetails';
   static const putAddDocument = 'driver/addDocument';
   static const bidJob = 'driver/job/bid';
   static const getBiddedJobs = 'driver/myBiddings';
@@ -27,4 +29,5 @@ class EndPoints {
   static const getJobs = 'driver/job';
   static const getAnalyticsWeek = 'driver/analytics/week';
   static const getAnalyticsMonth = 'driver/analytics/month';
+  static const getNotification = 'driver/getNotification';
 }

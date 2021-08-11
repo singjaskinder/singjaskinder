@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dlivrDriver/common/build_circular_loading.dart';
 import 'package:dlivrDriver/common/buttons.dart';
-import 'package:dlivrDriver/common/job_title.dart';
+import 'package:dlivrDriver/common/job_tile.dart';
 import 'package:dlivrDriver/common/retry.dart';
 import 'package:dlivrDriver/common/sized_box.dart';
 import 'package:dlivrDriver/common/text.dart';
@@ -67,17 +67,61 @@ class InprogressJobDetails extends StatelessWidget {
                     Obx(
                       () => ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
-                        child: GoogleMap(
-                          zoomControlsEnabled: false,
-                          myLocationEnabled: true,
-                          myLocationButtonEnabled: false,
-                          polylines: controller.polylines.value,
-                          initialCameraPosition: controller.initialPos,
-                          onMapCreated: (GoogleMapController mapController) {
-                            if (!controller.mapController.isCompleted) {
-                              controller.mapController.complete(mapController);
-                            }
-                          },
+                        child: Stack(
+                          children: [
+                            GoogleMap(
+                              zoomControlsEnabled: false,
+                              myLocationEnabled: true,
+                              myLocationButtonEnabled: false,
+                              markers: controller.markers.value,
+                              polylines: controller.polylines.value,
+                              initialCameraPosition: controller.initialPos,
+                              onMapCreated:
+                                  (GoogleMapController mapController) {
+                                if (!controller.mapController.isCompleted) {
+                                  controller.mapController
+                                      .complete(mapController);
+                                }
+                              },
+                            ),
+                            Obx(() => Visibility(
+                                  visible:
+                                      controller.status.value == 'inprogress',
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: GestureDetector(
+                                      onTap: () => controller.toNavigateMap(),
+                                      child: Container(
+                                        margin: EdgeInsets.all(8),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            color: AppColors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            boxShadow: [AppStyles.tileShadow]),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            BuildSizedBox(),
+                                            BuildText(
+                                              'Open in Navigation',
+                                              size: 2,
+                                            ),
+                                            BuildSizedBox(),
+                                            Icon(
+                                              Icons.open_in_new,
+                                              size: SizeConfig
+                                                      .imageSizeMultiplier *
+                                                  4,
+                                            ),
+                                            BuildSizedBox(),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                          ],
                         ),
                       ),
                     ),

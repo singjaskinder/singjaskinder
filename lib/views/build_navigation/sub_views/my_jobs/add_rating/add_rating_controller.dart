@@ -10,7 +10,7 @@ class AddRatingController extends GetxController {
   Jobs job;
   final formKey = GlobalKey<FormState>();
   final descriptionCtrl = TextEditingController();
-  int ratings = 1;
+  int ratings = -1;
 
   @override
   void onInit() {
@@ -20,6 +20,14 @@ class AddRatingController extends GetxController {
   }
 
   void addRate() async {
+    if (ratings == -1) {
+      BuildRetryBottomSheet(Get.context, Get.back,
+          text: 'Please add proper rating',
+          label: 'OK',
+          errored: true,
+          cancellable: false);
+      return;
+    }
     if (formKey.currentState.validate()) {
       try {
         isLoading(true);

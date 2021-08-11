@@ -127,6 +127,7 @@ class UserData {
 class Addresses {
   String sId;
   String address;
+  String street;
   String state;
   String city;
   int postalCode;
@@ -135,6 +136,7 @@ class Addresses {
   Addresses(
       {this.sId,
       this.address,
+      this.street,
       this.state,
       this.city,
       this.postalCode,
@@ -143,6 +145,7 @@ class Addresses {
   Addresses.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     address = json['address'];
+    street = json['street'];
     state = json['state'];
     city = json['city'];
     postalCode = json['postal_code'];
@@ -153,6 +156,7 @@ class Addresses {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['address'] = this.address;
+    data['street'] = this.street;
     data['state'] = this.state;
     data['city'] = this.city;
     data['postal_code'] = this.postalCode;

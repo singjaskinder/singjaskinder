@@ -1,5 +1,5 @@
 import 'package:dlivrDriver/common/build_circular_loading.dart';
-import 'package:dlivrDriver/common/job_title.dart';
+import 'package:dlivrDriver/common/job_tile.dart';
 import 'package:dlivrDriver/common/retry.dart';
 import 'package:dlivrDriver/common/sized_box.dart';
 import 'package:dlivrDriver/common/text.dart';
@@ -59,7 +59,7 @@ class InprogressJobs extends StatelessWidget {
                       if (snap.hasData) {
                         if (snap.data.isEmpty) {
                           return Center(
-                              child: BuildText('No completed jobs found',
+                              child: BuildText('No inprogress jobs found',
                                   color: AppColors.white,
                                   fontFamily: AppStyles.robotoB));
                         }

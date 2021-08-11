@@ -63,11 +63,41 @@ class MyProfile extends StatelessWidget {
               onTap: () => controller.toProfileDetails(),
               label: 'Profile details'),
         ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: BuildPrimaryButton(
-              onTap: () => controller.toSetPin(), label: 'Set / update pin'),
+        GestureDetector(
+          onTap: () => controller.toggleSwitch(),
+          child: Container(
+            margin: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+                color: AppColors.medViolet,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [AppStyles.buttonShadow]),
+            child: Row(
+              children: [
+                Spacer(
+                  flex: 2,
+                ),
+                BuildText(
+                  'Use Phone lock',
+                  size: 2.4,
+                  color: AppColors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                Spacer(),
+                Obx(() => Switch(
+                      onChanged: (v) => controller.toggleSwitch(),
+                      value: controller.switchVal.value,
+                      inactiveTrackColor: AppColors.white,
+                      activeTrackColor: AppColors.darkViolet.withOpacity(0.5),
+                      activeColor: AppColors.darkViolet,
+                    )),
+                BuildSizedBox(
+                  width: 4,
+                ),
+              ],
+            ),
+          ),
         ),
+        
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: BuildPrimaryButton(

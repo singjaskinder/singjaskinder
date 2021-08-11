@@ -238,11 +238,11 @@ class AUVehicleController extends GetxController {
             text: 'Vehicle ' + (isUpdate.value ? 'updated' : 'added'),
             label: 'OK',
             done: true,
+            autoClose: true,
             errored: true,
             cancellable: false);
       } on Dio.DioError catch (e) {
         print(e.message);
-        print('ssssssssssssss');
         isLoading(false);
         BuildRetryBottomSheet(Get.context, () {
           Get.back();

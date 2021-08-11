@@ -40,13 +40,14 @@ class ProfileDetailsController extends GetxController {
 
   void toAddAddress() => Get.toNamed(Routes.addAddress);
 
-  Addresses getAddress() {
+   Addresses getAddress() {
     final addressContent = address.value.split('&&');
     return Addresses(
-        state: addressContent[0].capitalizeFirst,
-        city: addressContent[1].capitalizeFirst,
-        address: addressContent[2].capitalizeFirst,
-        postalCode: int.parse(addressContent[3]));
+        address: addressContent[0].capitalizeFirst,
+        street: addressContent[1].capitalizeFirst,
+        city: addressContent[2].capitalizeFirst,
+        state: addressContent[3].capitalizeFirst,
+        postalCode: int.parse(addressContent[4]));
   }
 
   void imageControl() {

@@ -102,7 +102,6 @@ class AUVehicle extends StatelessWidget {
                           itemCount: controller.docs.length,
                           itemBuilder: (_, i) {
                             final doc = controller.docs[i];
-                            print('sswdnweiffwefwgwhogwhgoeh');
                             return BuildDocumentTile(doc,
                                 onTap: (v) => controller.docControl(i, v));
                           },

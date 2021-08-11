@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dlivrDriver/common/build_circular_loading.dart';
 import 'package:dlivrDriver/common/buttons.dart';
-import 'package:dlivrDriver/common/job_title.dart';
+import 'package:dlivrDriver/common/job_tile.dart';
 import 'package:dlivrDriver/common/retry.dart';
 import 'package:dlivrDriver/common/sized_box.dart';
 import 'package:dlivrDriver/common/text.dart';
@@ -71,6 +71,7 @@ class BiddedJobDetails extends StatelessWidget {
                           zoomControlsEnabled: false,
                           myLocationEnabled: true,
                           myLocationButtonEnabled: false,
+                          markers: controller.markers.value,
                           polylines: controller.polylines.value,
                           initialCameraPosition: controller.initialPos,
                           onMapCreated: (GoogleMapController mapController) {

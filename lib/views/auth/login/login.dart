@@ -111,7 +111,7 @@ class Login extends StatelessWidget {
                   color: AppColors.darkBlue,
                 ),
               ),
-              BuildText('or'),
+              // BuildText('or'),
               BuildSizedBox(height: 1.5),
               Visibility(visible: false, child: BuildSizedBox(height: 1.5)),
               // BuildPrimaryButton(

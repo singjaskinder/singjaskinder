@@ -64,6 +64,11 @@ class _BuildNavigationState extends State<BuildNavigation>
               color: AppColors.white,
               fontWeight: FontWeight.bold,
             ),
+            actions: [
+              IconButton(
+                  onPressed: () => controller.toNotification(),
+                  icon: Icon(Feather.bell))
+            ],
           ),
           drawer: Container(
             decoration: BoxDecoration(gradient: AppStyles.darkGradient),
@@ -116,16 +121,15 @@ class _BuildNavigationState extends State<BuildNavigation>
                               BuildSizedBox(
                                 width: 2,
                               ),
-                              Obx(
-                                () => BuildText(
-                                  controller.ratings.value.isEmpty
-                                      ? 'No ratings'
-                                      : controller.ratings.value,
-                                  size: 3,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.violet,
-                                ),
-                              ),
+                              BuildText(
+                                'My ratings',
+                                // controller.ratings.value.isEmpty
+                                //     ? 'No ratings'
+                                //     : controller.ratings.value,
+                                size: 2.4,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.violet,
+                              )
                             ],
                           ),
                         ),

@@ -16,6 +16,9 @@ class HomeController extends GetxController {
           params: location.latitude.toString() +
               '/' +
               location.longitude.toString());
+      print('-------------------location');
+      print(location);
+      print('-------------------location');
       return JobM.fromJson(res.data).jobs;
       // return [];
     } catch (e) {

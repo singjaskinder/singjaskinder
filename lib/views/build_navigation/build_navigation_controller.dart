@@ -93,6 +93,9 @@ class BuildNavigationController extends GetxController {
     getUserDetails();
   }
 
+  void toNotification() => Get.toNamed(Routes.notifications);
+
+
   void selectMenu(int i) {
     Get.back();
     if (i == sideNavMenus.length - 1) {
@@ -140,6 +143,19 @@ class BuildNavigationController extends GetxController {
       userName.value = Preferences.getName();
       imageUrl.value = Preferences.getImage() ?? '';
       String rating = Preferences.getRatings();
+      if (userM.userData[0].addresses.isNotEmpty) {
+        final addressContent = userM.userData[0].addresses.first;
+        final address = addressContent.address +
+            '&&' +
+            addressContent.street +
+            '&&' +
+            addressContent.city +
+            '&&' +
+            addressContent.state +
+            '&&' +
+            addressContent.postalCode.toString();
+        Preferences.saver.setString('address', address);
+      }
       final details = DriverM.fromJson(res.data).details;
       final primaryDoc = details[0].primaryDocument;
       final secondaryDoc = details[0].secondaryDocument;

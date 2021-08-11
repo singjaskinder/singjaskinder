@@ -6,8 +6,7 @@ import 'package:get/get.dart';
 
 class NotificationsController extends GetxController {
   Future<List<Notifications>> getNotifications() async {
-    // final res = await ApiHandler.getHttp(EndPoints.getNotifications);
-    // return  NotificationM.fromJson(res.data).notifications;
-    return [];
+    final res = await ApiHandler.getHttp(EndPoints.getNotification);
+    return NotificationM.fromJson(res.data).notifications;
   }
 }

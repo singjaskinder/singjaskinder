@@ -67,6 +67,7 @@ class JobDetails extends StatelessWidget {
                           zoomControlsEnabled: false,
                           myLocationEnabled: true,
                           myLocationButtonEnabled: false,
+                          markers: controller.markers.value,
                           polylines: controller.polylines.value,
                           initialCameraPosition: controller.initialPos,
                           onMapCreated: (GoogleMapController mapController) {
@@ -164,13 +165,18 @@ class JobDetails extends StatelessWidget {
                           ],
                         ),
                         BuildSizedBox(),
+                        BuildText(
+                          'Note:\nYou can re-edit / update your bid price only 3 times',
+                          size: 1.5,
+                        ),
+                        BuildSizedBox(),
                         Obx(() => BuildPrimaryButton(
-                            isEnabled: controller.biddedprice.value == 0.0,
+                            isEnabled: controller.bidCount.value < 3,
                             onTap: () => controller.toBidprice(),
-                            label: controller.biddedprice.value != 0.0
-                                ? 'Already bidded ' +
-                                    makePrice(controller.biddedprice.value)
-                                : 'Bid your price'))
+                            label: controller.bidCount.value < 3
+                                ? 'Bid your price'
+                                : 'Already bidded ' +
+                                    makePrice(controller.bidPrice.value)))
                       ],
                     )),
               ],

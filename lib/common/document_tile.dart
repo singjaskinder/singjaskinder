@@ -13,6 +13,44 @@ class DocumentM {
   String label;
 }
 
+class BuildSection extends StatelessWidget {
+  const BuildSection(this.label, {Key key}) : super(key: key);
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: SizeConfig.widthMultiplier * 80,
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          color: AppColors.medViolet,
+          borderRadius: BorderRadius.horizontal(right: Radius.circular(50)),
+          boxShadow: [AppStyles.tileShadowDark]),
+      child: Row(
+        children: [
+          BuildSizedBox(
+            width: 2,
+          ),
+          BuildText(
+            label.capitalize,
+            color: AppColors.white,
+            fontWeight: FontWeight.bold,
+            size: 2.6,
+          ),
+          Spacer(),
+          CircleAvatar(
+            backgroundColor: AppColors.white,
+            child: Icon(
+              Icons.arrow_circle_down,
+              color: AppColors.black,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class BuildDocumentTile extends StatelessWidget {
   const BuildDocumentTile(this.document, {this.onTap, Key key})
       : super(key: key);
@@ -31,7 +69,7 @@ class BuildDocumentTile extends StatelessWidget {
       child: Row(
         children: [
           Icon(
-            Feather.folder,
+            Feather.file,
             color: AppColors.violet,
             size: SizeConfig.imageSizeMultiplier * 5,
           ),

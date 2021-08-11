@@ -16,6 +16,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/src/media_type.dart';
 
 class MyProfileController extends GetxController {
+
+   final switchVal = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    switchVal.value = Preferences.saver.getBool('use_lock') ?? false;
+  }
+
+  void toggleSwitch() {
+    switchVal.value = !switchVal.value;
+    Preferences.saver.setBool('use_lock', switchVal.value);
+  }
   void toProfileDetails() => Get.toNamed(Routes.profileDetails);
 
   void toSetPin() => Get.toNamed(Routes.setPin);

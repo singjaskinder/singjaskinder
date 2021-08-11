@@ -50,32 +50,29 @@ class MyDocuments extends StatelessWidget {
           BuildSizedBox(),
           Expanded(
               child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  BuildSizedBox(),
-                  GetBuilder<MyDocumentsController>(
-                    builder: (_) {
-                      return ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: controller.docs.length,
-                        itemBuilder: (_, i) {
-                          final doc = controller.docs[i];
-                          return BuildDocumentTile(doc,
-                              onTap: (v) => controller.docControl(i, v));
-                        },
-                      );
-                    },
-                  ),
-                  BuildSizedBox(
-                    height: 3,
-                  ),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BuildSizedBox(),
+                GetBuilder<MyDocumentsController>(
+                  builder: (_) {
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      itemCount: controller.docs.length,
+                      itemBuilder: (_, i) {
+                        final doc = controller.docs[i];
+                        return BuildDocWrapper(i, doc,
+                            onTap: (v) => controller.docControl(i, v));
+                      },
+                    );
+                  },
+                ),
+                BuildSizedBox(
+                  height: 3,
+                ),
+              ],
             ),
           )),
           Padding(
@@ -84,6 +81,59 @@ class MyDocuments extends StatelessWidget {
                 onTap: () => controller.updateDocuments(),
                 label: 'Submit',
               ))
+        ],
+      ),
+    );
+  }
+}
+
+class BuildDocWrapper extends StatelessWidget {
+  const BuildDocWrapper(this.index, this.document, {this.onTap, Key key})
+      : super(key: key);
+  final int index;
+  final DocumentM document;
+  final Function onTap;
+
+  bool getVisibility() {
+    if (index == 0 || index == 2 || index == 7 || index == 8) {
+      return true;
+    }
+    return false;
+  }
+
+  String getLabel() {
+    if (index == 0) {
+      return 'primary documents';
+    } else if (index == 2) {
+      return 'secondary documents';
+    } else if (index == 7) {
+      return 'required documents';
+    } else if (index == 8) {
+      return 'become super driver';
+    }
+    return '';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Visibility(
+            visible: getVisibility(),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 5),
+              child: BuildSection(getLabel()),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: BuildDocumentTile(
+              document,
+              onTap: onTap,
+            ),
+          )
         ],
       ),
     );

@@ -10,6 +10,7 @@ import 'package:dlivrDriver/res/app_colors.dart';
 import 'package:dlivrDriver/routes/app_routes.dart';
 import 'package:dlivrDriver/utils/functions/preferences.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/inprogress_jobs/inprogress_jobs_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -19,6 +20,9 @@ class InprogressJobDetailsController extends GetxController {
   Jobs job;
   Completer<GoogleMapController> mapController = Completer();
   final polylines = Set<Polyline>().obs;
+  final markers = Set<Marker>().obs;
+  BitmapDescriptor startIcon;
+  BitmapDescriptor endIcon;
   CameraPosition initialPos;
   LatLng sourceLocation;
   LatLng destinationLocation;
@@ -56,6 +60,10 @@ class InprogressJobDetailsController extends GetxController {
     getPlotDetails();
   }
 
+  void toNavigateMap() {
+    Get.toNamed(Routes.navigateMap, arguments: {'job_details': job});
+  }
+
   Future<void> getPlotDetails() async {
     PolylinePoints polylinePoints = PolylinePoints();
     isLoading(true);
@@ -85,7 +93,24 @@ class InprogressJobDetailsController extends GetxController {
       sourceLocation = destinationLocation;
       destinationLocation = tempLocation;
     }
-
+    await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(10, 10)),
+            'assets/images/markers/start.png')
+        .then((icon) {
+      startIcon = icon;
+    });
+    await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(10, 10)),
+            'assets/images/markers/end.png')
+        .then((icon) {
+      endIcon = icon;
+    });
+    markers.add(Marker(
+        markerId: MarkerId('scr1'), position: sourceLocation, icon: startIcon));
+    markers.add(Marker(
+        markerId: MarkerId('des1'),
+        position: destinationLocation,
+        icon: endIcon));
     final GoogleMapController mapController1 = await mapController.future;
     mapController1.animateCamera(
       CameraUpdate.newLatLngBounds(
@@ -107,7 +132,16 @@ class InprogressJobDetailsController extends GetxController {
   }
 
   void decide() async {
-    if (1 == 1) {}
+    InprogressJobsController inprogressJobsController = Get.find();
+    if (status.value == 'upcoming' && inprogressJobsController.inProgressJob) {
+      BuildRetryBottomSheet(Get.context, Get.back,
+          text: 'Please complete your previous job inorder to with new job',
+          label: 'OK',
+          errored: true,
+          autoClose: true,
+          cancellable: false);
+      return;
+    }
     try {
       isLoading(true);
       await ApiHandler.putHttp(

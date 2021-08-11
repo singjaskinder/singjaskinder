@@ -13,6 +13,7 @@ import 'package:dlivrDriver/utils/functions/preferences.dart';
 import 'package:dlivrDriver/utils/local.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/home/home_controller.dart';
 import 'package:dlivrDriver/views/build_navigation/sub_views/my_jobs/my_jobs_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -21,10 +22,15 @@ class JobDetailsController extends GetxController {
   Jobs job;
   Completer<GoogleMapController> mapController = Completer();
   final polylines = Set<Polyline>().obs;
+  final markers = Set<Marker>().obs;
+  BitmapDescriptor startIcon;
+  BitmapDescriptor endIcon;
   CameraPosition initialPos;
   LatLng sourceLocation;
   LatLng destinationLocation;
-  final biddedprice = (0.0).obs;
+  final bidCount = 0.obs;
+  final bidPrice = (0.0).obs;
+  Bidding biddingDetails;
   String id;
 
   @override
@@ -43,7 +49,9 @@ class JobDetailsController extends GetxController {
     );
     for (Bidding bidding in job.bidding) {
       if (bidding.driverId == id) {
-        biddedprice.value = bidding.bid;
+        bidCount.value = bidding.count;
+        bidPrice.value = bidding.bid;
+        biddingDetails = bidding;
       }
     }
   }
@@ -83,6 +91,24 @@ class JobDetailsController extends GetxController {
       sourceLocation = destinationLocation;
       destinationLocation = tempLocation;
     }
+    await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(10, 10)),
+            'assets/images/markers/start.png')
+        .then((icon) {
+      startIcon = icon;
+    });
+    await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(10, 10)),
+            'assets/images/markers/end.png')
+        .then((icon) {
+      endIcon = icon;
+    });
+    markers.add(Marker(
+        markerId: MarkerId('scr1'), position: sourceLocation, icon: startIcon));
+    markers.add(Marker(
+        markerId: MarkerId('des1'),
+        position: destinationLocation,
+        icon: endIcon));
 
     final GoogleMapController mapController1 = await mapController.future;
     mapController1.animateCamera(
@@ -97,13 +123,13 @@ class JobDetailsController extends GetxController {
   }
 
   void toBidprice() {
-    if(!checkProfileDetails()){
-    return;
+    if (!checkProfileDetails()) {
+      return;
     }
-     if(!checkDocuments()){
-    return;
+    if (!checkDocuments()) {
+      return;
     }
-      Get.toNamed(Routes.bidPrice, arguments: {'job_details': job});
-
+    Get.toNamed(Routes.bidPrice,
+        arguments: {'job_details': job, 'bidding_details': biddingDetails});
   }
 }

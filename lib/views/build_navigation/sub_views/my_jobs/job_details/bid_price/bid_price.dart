@@ -9,6 +9,7 @@ import 'package:dlivrDriver/res/app_styles.dart';
 import 'package:dlivrDriver/utils/local.dart';
 import 'package:dlivrDriver/utils/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'bid_price_controller.dart';
@@ -52,39 +53,68 @@ class BidPrice extends StatelessWidget {
               ),
             ),
             BuildSizedBox(
-              height: 20,
+              height: 2,
             ),
             Expanded(
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                BuildText(
-                  'Your Bid Price',
-                  size: 3.2,
-                  color: AppColors.white,
-                  fontWeight: FontWeight.bold,
+                Container(
+                  width: SizeConfig.widthMultiplier * 90,
+                  margin: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: AppColors.white.withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    children: [
+                      Align(
+                          alignment: Alignment.topRight,
+                          child: Icon(
+                            Feather.info,
+                            color: AppColors.medViolet,
+                          )),
+                      BuildText(
+                        'Customer\'s budget\n' +
+                            makePrice(controller.job.finalBudget),
+                        color: AppColors.darkViolet,
+                        textAlign: TextAlign.center,
+                        fontWeight: FontWeight.bold,
+                        size: 2.6,
+                      ),
+                      BuildSizedBox(
+                        height: 2,
+                      ),
+                      Obx(() => BuildText(
+                            'Note:\nYou can re-edit your bid price only ' +
+                                (3 -
+                                        controller.jobDetailsController.bidCount
+                                            .value)
+                                    .toString() +
+                                ' times on this job',
+                            size: 1.8,
+                          )),
+                      BuildSizedBox(),
+                    ],
+                  ),
+                ),
+                BuildSizedBox(
+                  height: 3,
                 ),
                 BuildSizedBox(),
                 BuildCustomTextField(
                   controller: controller.priceCtrl,
                   textInputType: TextInputType.number,
-                  hint: '',
+                  hint: 'Enter Your Bid Price',
                   centerCursor: true,
                   textInputAction: TextInputAction.done,
                 ),
-                BuildSizedBox(
-                  height: 3,
-                ),
-                BuildText(
-                  'Customer\'s budget\n' +
-                      makePrice(controller.job.finalBudget),
-                  color: AppColors.white,
-                  textAlign: TextAlign.center,
-                  fontWeight: FontWeight.bold,
-                ),
                 Spacer(),
-                BuildPrimaryButton(
-                    onTap: () => controller.bid(), label: 'Confirm')
+                Obx(() => BuildPrimaryButton(
+                    isEnabled:
+                        controller.jobDetailsController.bidCount.value < 3,
+                    onTap: () => controller.bid(),
+                    label: 'Done'))
               ],
             )),
           ],

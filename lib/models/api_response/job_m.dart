@@ -216,15 +216,23 @@ class Bidding {
   String sId;
   String driverId;
   double bid;
+  int count;
   String remarks;
   String createdAt;
 
-  Bidding({this.sId, this.driverId, this.bid, this.remarks, this.createdAt});
+  Bidding(
+      {this.sId,
+      this.driverId,
+      this.bid,
+      this.count,
+      this.remarks,
+      this.createdAt});
 
   Bidding.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     driverId = json['driverId'];
     bid = json['bid'].toDouble();
+    count = json['count'];
     remarks = json['remarks'];
     createdAt = json['createdAt'];
   }
@@ -235,6 +243,7 @@ class Bidding {
     data['driverId'] = this.driverId;
     data['bid'] = this.bid.toDouble();
     data['remarks'] = this.remarks;
+    data['count'] = this.count;
     data['createdAt'] = this.createdAt;
     return data;
   }

@@ -63,4 +63,8 @@ class Preferences {
   static String getPhone() => saver.getString('phone');
   static String getImage() => saver.getString('image');
   static String getRatings() => saver.getString('ratings');
+
+   static void clearAll() {
+    saver.clear();
+  }
 }
