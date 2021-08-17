@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:dlivrDriver/apis/api_handler.dart';
 import 'package:dlivrDriver/common/document_tile.dart';
+import 'package:dlivrDriver/overlays/bottom_sheet.dart';
 import 'package:dlivrDriver/res/app_colors.dart';
 import 'package:dlivrDriver/routes/app_routes.dart';
 import 'package:dlivrDriver/utils/functions/preferences.dart';
@@ -61,20 +62,24 @@ bool checkProfileDetails() {
   final name = Preferences.saver.getString('name') ?? '';
   final image = Preferences.saver.getString('image') ?? '';
   final address = Preferences.saver.getString('address') ?? '';
+  final onPos = () {
+    Get.toNamed(Routes.profileDetails);
+  };
   if (name.isEmpty || image.isEmpty) {
-    Get.snackbar(
-        'Oops', 'You need complete your profile before applying to a job',
-        backgroundColor: AppColors.white, snackPosition: SnackPosition.BOTTOM);
-    Future.delayed(Duration(milliseconds: 1800), () {
-      Get.toNamed(Routes.profileDetails);
-    });
+    BuildRetryBottomSheet(Get.context, onPos,
+        text: 'You need complete your profile before adding a job',
+        errored: true,
+        label: 'Go to profile',
+        autoClose: true,
+        cancellable: true);
     return false;
   } else if (address.isEmpty) {
-    Get.snackbar('Oops', 'You need to address before applying to a job',
-        backgroundColor: AppColors.white, snackPosition: SnackPosition.BOTTOM);
-    Future.delayed(Duration(milliseconds: 1800), () {
-      Get.toNamed(Routes.profileDetails);
-    });
+    BuildRetryBottomSheet(Get.context, onPos,
+        text: 'You need to address before adding a job',
+        errored: true,
+        label: 'Go to profile',
+        autoClose: true,
+        cancellable: true);
     return false;
   }
   return true;
@@ -101,11 +106,16 @@ bool checkDocuments() {
       medicare.isEmpty ||
       federalPoliceCheck.isEmpty ||
       drivingHistory.isEmpty) {
-    Get.snackbar('Oops', 'You add all the documents before applying to a job',
-        backgroundColor: AppColors.white, snackPosition: SnackPosition.BOTTOM);
-    Future.delayed(Duration(milliseconds: 1800), () {
+    final onPos = () {
       Get.toNamed(Routes.myDocuments);
-    });
+    };
+    BuildRetryBottomSheet(Get.context, onPos,
+        text: 'You add all the documents before applying to a job',
+        errored: true,
+        label: 'Add docuements',
+        autoClose: true,
+        cancellable: true);
+
     return false;
   }
   return true;
